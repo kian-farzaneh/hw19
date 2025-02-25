@@ -3,15 +3,15 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Signin() {
+export default function Signup() {
   const [email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const navigator = useNavigate();
 
-  const postSigninData = (email: any, password: any) => {
+  const postSignupData = (email: any, password: any) => {
     axios
       .post(
-        "http://api.alikooshesh.ir:3000/api/users/login",
+        "http://api.alikooshesh.ir:3000/api/users/register",
         {
           email,
           password,
@@ -25,14 +25,13 @@ export default function Signin() {
         }
       )
       .then((response) => {
-        localStorage.setItem("token", response.data.accessToken);
-        navigator("/weather_page");
-      })
-      .catch((err) => console.log(err));
+        console.log(response.data.accessToken);
+        navigator("/signin_page");
+      });
   };
 
   return (
-    <div>
+    <div className="bg-[#19191a] w-full h-screen flex justify-center items-center">
       <FormControl className="flex flex-col justify-center items-center gap-6">
         <div>
           <FormLabel color="white">Email address</FormLabel>
@@ -53,10 +52,10 @@ export default function Signin() {
           />
         </div>
         <button
-          onClick={() => postSigninData(email, Password)}
+          onClick={() => postSignupData(email, Password)}
           className="border border-white rounded-full px-8 py-3 mt-5 text-white "
         >
-          Sign In
+          Sign Up
         </button>
       </FormControl>
     </div>

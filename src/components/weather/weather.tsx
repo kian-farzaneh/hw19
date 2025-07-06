@@ -1,6 +1,6 @@
 import { FormControl, Input } from "@chakra-ui/react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface IWeather {
   name: string;

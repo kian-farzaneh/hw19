@@ -13,8 +13,8 @@ export default function Weather() {
   const [weather, setWeather] = useState<IWeather | null>(null);
   const [city,setCity] = useState<string | null>('')
 
-  const api_key = "e560dd7c725774f17a75befca6b816d7";
-
+  const api_key = import.meta.env.VITE_WEATHER_API_KEY;
+  console.log("API KEY:", api_key);
   const weatherIcons: { [key: string]: string } = {
     Clouds: "clouds.png",
     Clear: "sun.png",

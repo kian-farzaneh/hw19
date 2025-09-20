@@ -13,7 +13,7 @@ export default function Weather() {
   const [weather, setWeather] = useState<IWeather | null>(null);
   const [city,setCity] = useState<string | null>('')
 
-  const api_key = "e560dd7c725774f17a75befca6b816d7";
+  const api_key = "90218d7ad869ef14db558188ea696c1e";
 
   const weatherIcons: { [key: string]: string } = {
     Clouds: "clouds.png",

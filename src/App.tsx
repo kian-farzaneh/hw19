@@ -10,10 +10,10 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          {/* <Route path="/" element={<HomePage />} />
           <Route path="/signin_page" element={<SigninPage />} />
-          <Route path="/signup_page" element={<SignupPage />} />
-          <Route path="/weather_page" element={<WeatherPage />} />
+          <Route path="/signup_page" element={<SignupPage />} /> */}
+          <Route path="/" element={<WeatherPage />} />
         </Routes>
       </Router>
     </>

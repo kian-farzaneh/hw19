@@ -41,7 +41,7 @@ export default function Weather() {
     <div className="bg-[#19191a] w-full h-screen text-white">
       <div className="w-80 absolute top-2 left-[540px]">
         <FormControl className="flex">
-          <Input onChange={(e) => setCity(e.target.value)} type="email" />
+          <Input onChange={(e) => setCity(e.target.value)} type="email" placeholder={"Enter name of the city"} />
           <button
             onClick={getWeather}
             className="bg-blue-700 p-1 ml-1 rounded-lg"

@@ -4,7 +4,12 @@ import { useState, KeyboardEvent } from "react";
 interface IWeather {
   name: string;
   sys: { country: string; sunrise: number; sunset: number };
-  main: { temp: number; feels_like: number; humidity: number; pressure: number };
+  main: {
+    temp: number;
+    feels_like: number;
+    humidity: number;
+    pressure: number;
+  };
   wind: { speed: number };
   visibility: number;
   weather: { id: number; description: string; main: string }[];
@@ -19,13 +24,15 @@ export default function Weather() {
   const api_key = "90218d7ad869ef14db558188ea696c1e";
 
   const weatherIcons: Record<string, string> = {
-    Clouds: "clouds.png",
     Clear: "sun.png",
-    Fog: "rain.png",
+    Clouds: "cloud.png",
+    Rain: "rain.png",
+    Drizzle: "rain.png", 
     Snow: "snow.png",
-    Thunderstorm: "thunderstorm.png",
-    Drizzle: "drizzle.png",
-    Mist: "mist.png",
+    Thunderstorm: "thunderstorm.png", 
+    Mist: "wind.png",
+    Fog: "wind.png",
+    Haze: "wind.png",
   };
 
   const getWeather = async () => {
@@ -35,7 +42,7 @@ export default function Weather() {
 
     try {
       const result = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city.trim()}&appid=${api_key}&units=metric`
+        `https://api.openweathermap.org/data/2.5/weather?q=${city.trim()}&appid=${api_key}&units=metric`,
       );
       setWeather(result.data);
       localStorage.setItem("last_weather", JSON.stringify(result.data));
@@ -58,14 +65,12 @@ export default function Weather() {
 
   return (
     <div className="relative min-h-screen w-full bg-[#0d1117] text-slate-100 flex flex-col items-center justify-start px-4 py-12 selection:bg-cyan-500 selection:text-white font-sans overflow-x-hidden">
-      
       {/* Background Ambient Glows (نورپردازی بک‌گراند بدون اسکرول افقی) */}
       <div className="pointer-events-none fixed top-[-15%] left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-to-tr from-cyan-600/20 via-indigo-600/25 to-blue-500/20 blur-[130px] rounded-full" />
       <div className="pointer-events-none fixed bottom-[-10%] right-[-10%] w-[450px] h-[350px] bg-sky-500/10 blur-[120px] rounded-full" />
 
       {/* Main Container */}
       <div className="relative z-10 w-full max-w-3xl flex flex-col items-center gap-8">
-        
         {/* Header Title */}
         <header className="text-center space-y-1">
           <span className="text-xs uppercase tracking-widest font-semibold text-cyan-400">
@@ -85,7 +90,12 @@ export default function Weather() {
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
             </svg>
             <input
               type="text"
@@ -120,17 +130,30 @@ export default function Weather() {
         {/* Dashboard Display */}
         {weather && (
           <main className="w-full space-y-5 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            
             {/* Primary Glass Card */}
             <div className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-white/[0.08] to-white/[0.02] border border-white/10 backdrop-blur-2xl p-6 sm:p-8 shadow-2xl">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-                
                 {/* Left: Location & Main Temperature */}
                 <div className="text-center sm:text-left space-y-1">
                   <div className="flex items-center justify-center sm:justify-start gap-2 text-slate-300">
-                    <svg className="w-4 h-4 text-cyan-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <svg
+                      className="w-4 h-4 text-cyan-400 shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
                     </svg>
                     <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
                       {weather.name}
@@ -145,7 +168,10 @@ export default function Weather() {
                       {Math.round(weather.main.temp)}°
                     </span>
                     <span className="text-slate-400 text-sm font-medium">
-                      Feels like <strong className="text-slate-200">{Math.round(weather.main.feels_like)}°C</strong>
+                      Feels like{" "}
+                      <strong className="text-slate-200">
+                        {Math.round(weather.main.feels_like)}°C
+                      </strong>
                     </span>
                   </div>
 
@@ -168,35 +194,58 @@ export default function Weather() {
 
             {/* Micro-Metrics Grid (۴ باکس تفکیکی تحلیلی) */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-              
               {/* Humidity */}
               <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-lg p-4 flex flex-col items-start gap-1">
-                <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Humidity</span>
-                <span className="text-2xl font-bold text-white tracking-tight">{weather.main.humidity}%</span>
-                <span className="text-[11px] text-slate-400">Moisture level</span>
+                <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">
+                  Humidity
+                </span>
+                <span className="text-2xl font-bold text-white tracking-tight">
+                  {weather.main.humidity}%
+                </span>
+                <span className="text-[11px] text-slate-400">
+                  Moisture level
+                </span>
               </div>
 
               {/* Wind Speed */}
               <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-lg p-4 flex flex-col items-start gap-1">
-                <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Wind</span>
-                <span className="text-2xl font-bold text-white tracking-tight">{weather.wind.speed} <span className="text-xs font-normal">m/s</span></span>
-                <span className="text-[11px] text-slate-400">Current velocity</span>
+                <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">
+                  Wind
+                </span>
+                <span className="text-2xl font-bold text-white tracking-tight">
+                  {weather.wind.speed}{" "}
+                  <span className="text-xs font-normal">m/s</span>
+                </span>
+                <span className="text-[11px] text-slate-400">
+                  Current velocity
+                </span>
               </div>
 
               {/* Pressure */}
               <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-lg p-4 flex flex-col items-start gap-1">
-                <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Pressure</span>
-                <span className="text-2xl font-bold text-white tracking-tight">{weather.main.pressure} <span className="text-xs font-normal">hPa</span></span>
+                <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">
+                  Pressure
+                </span>
+                <span className="text-2xl font-bold text-white tracking-tight">
+                  {weather.main.pressure}{" "}
+                  <span className="text-xs font-normal">hPa</span>
+                </span>
                 <span className="text-[11px] text-slate-400">Atmospheric</span>
               </div>
 
               {/* Visibility */}
               <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-lg p-4 flex flex-col items-start gap-1">
-                <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Visibility</span>
-                <span className="text-2xl font-bold text-white tracking-tight">{(weather.visibility / 1000).toFixed(1)} <span className="text-xs font-normal">km</span></span>
-                <span className="text-[11px] text-slate-400">Horizontal scope</span>
+                <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">
+                  Visibility
+                </span>
+                <span className="text-2xl font-bold text-white tracking-tight">
+                  {(weather.visibility / 1000).toFixed(1)}{" "}
+                  <span className="text-xs font-normal">km</span>
+                </span>
+                <span className="text-[11px] text-slate-400">
+                  Horizontal scope
+                </span>
               </div>
-
             </div>
           </main>
         )}
@@ -204,10 +253,12 @@ export default function Weather() {
         {/* Empty State / Prompt */}
         {!weather && !isLoading && (
           <div className="mt-12 text-center text-slate-400 text-sm space-y-2">
-            <p>Ready for inspection. Type any global city to fetch real-time atmospheric telemetry.</p>
+            <p>
+              Ready for inspection. Type any global city to fetch real-time
+              atmospheric telemetry.
+            </p>
           </div>
         )}
-
       </div>
     </div>
   );

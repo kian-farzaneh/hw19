@@ -23,18 +23,6 @@ export default function Weather() {
 
   const api_key = "90218d7ad869ef14db558188ea696c1e";
 
-  const weatherIcons: Record<string, string> = {
-    Clear: "sun.png",
-    Clouds: "clouds.png",
-    Rain: "rain.png",
-    Drizzle: "rain.png",
-    Snow: "snow.png",
-    Thunderstorm: "thunderstorm.png",
-    Mist: "wind.png",
-    Fog: "wind.png",
-    Haze: "wind.png",
-  };
-
   const getWeather = async () => {
     if (!city.trim()) return;
     setIsLoading(true);

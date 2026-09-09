@@ -21,7 +21,7 @@ export default function Weather() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const api_key = "90218d7ad869ef14db558188ea696c1e";
+  const api_key = import.meta.env.VITE_WEATHER_API_KEY;
 
   const getWeather = async () => {
     if (!city.trim()) return;

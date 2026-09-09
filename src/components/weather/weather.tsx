@@ -25,11 +25,11 @@ export default function Weather() {
 
   const weatherIcons: Record<string, string> = {
     Clear: "sun.png",
-    Clouds: "cloud.png",
+    Clouds: "clouds.png",
     Rain: "rain.png",
-    Drizzle: "rain.png", 
+    Drizzle: "rain.png",
     Snow: "snow.png",
-    Thunderstorm: "thunderstorm.png", 
+    Thunderstorm: "thunderstorm.png",
     Mist: "wind.png",
     Fog: "wind.png",
     Haze: "wind.png",
@@ -61,6 +61,25 @@ export default function Weather() {
     if (e.key === "Enter") {
       getWeather();
     }
+  };
+
+  const getWeatherIcon = (main?: string, desc?: string): string => {
+    const text = `${main || ""} ${desc || ""}`.toLowerCase();
+
+    if (text.includes("rain") || text.includes("drizzle")) return "/rain.png";
+    if (text.includes("thunder") || text.includes("storm"))
+      return "/thunderstorm.png";
+    if (text.includes("snow")) return "/snow.png";
+    if (text.includes("clear") || text.includes("sun")) return "/sun.png";
+    if (
+      text.includes("wind") ||
+      text.includes("mist") ||
+      text.includes("fog") ||
+      text.includes("haze")
+    )
+      return "/wind.png";
+
+    return "/clouds.png";
   };
 
   return (
@@ -184,7 +203,10 @@ export default function Weather() {
                 <div className="relative group shrink-0">
                   <div className="absolute inset-0 bg-cyan-500/20 blur-2xl rounded-full group-hover:bg-cyan-500/30 transition-all duration-300" />
                   <img
-                    src={`./${weatherIcons[weather.weather[0]?.main] ?? "default.png"}`}
+                    src={getWeatherIcon(
+                      weather.weather[0]?.main,
+                      weather.weather[0]?.description,
+                    )}
                     alt={weather.weather[0]?.description || "Weather state"}
                     className="relative w-36 h-36 sm:w-44 sm:h-44 object-contain drop-shadow-[0_15px_15px_rgba(0,0,0,0.4)] transition-transform duration-300 group-hover:scale-105"
                   />
